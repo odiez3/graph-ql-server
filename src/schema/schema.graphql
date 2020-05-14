@@ -1,0 +1,234 @@
+type Query {
+    """Este es el servicio para consultar todos los usuarios"""
+    allUsers: [User]
+    allCategories: [Categorie!]
+    deleteCategorie(idCategorie:String!):Boolean!
+    updateCategorie(idCategorie:String!,categoryName:String!): Categorie
+    getProducts: [Product]
+    getProductsByCategory(idCategorie:String):[Product]
+    checkDataInDB:User
+    getCartItems:CartItems
+    getProductByID(id:String!):Product
+    getEstados: [Estado!]!
+    getMunicipiosByEstado(estado:String!):[Municipio!]!
+    getOrders(idOrder:String):[Order]
+}
+
+type Mutation {
+    saveUser(value: UserInput!): User
+    savePersonalData(user: PersonalDataInput): User
+    saveDeliverData(user: DeliverDataInput): User
+    saveCategory(value:CategoryInput): Categorie
+    saveProduct(product:ProductInput): Product
+    addItemToCart(item:CartInput): [Cart]
+    deleteCartItem(idItem:String!): String
+    createOrder(orderToDeliver:OrderToDeliverInput!):OrderResult
+}
+
+type Subscription{
+    userInfo(email: String): User
+    userCart(userID: String!): CartItems
+}
+
+type User{
+    _id: String
+    userEmail: String!
+    userUID: String
+    userFirstName: String
+    userLastName: String
+    userPhone: String,
+    userCity: String
+    citySelected: Municipio
+    userState: String
+    stateSelected: Estado
+    userZip: String
+    userNoExt:String
+    userNoInt:String
+    userAddress: String
+    userAddress2: String
+    userEmailVerified: Boolean
+    userRegistrationDate: String!
+}
+
+type Cart{
+    _id: String!
+     user: User
+    product: Product
+    quantity: Float
+    updatedItem: String
+}
+
+type CartItems{
+   item: [Cart!],
+   userID: String!
+   totalItems: Float!
+}
+
+input UserInput{
+    userEmail: String!
+    userUID: String!
+    userFirstName: String!
+    userLastName: String!
+    userPhone: String!
+    userCity: String
+    citySelected: String
+    userState: String
+    stateSelected: String
+    userNoExt:String
+    userNoInt: String
+    userZip: String
+    userAddress: String
+    userAddress2: String
+    userEmailVerified: Boolean
+}
+
+input PersonalDataInput{
+    userEmail: String!
+    userUID: String!
+    userFirstName: String!
+    userLastName: String!
+    userPhone: String!,
+}
+
+input DeliverDataInput{
+    userEmail: String!
+    userUID: String!
+    userCity: String!
+    citySelected: String!
+    userState: String!
+    stateSelected: String!
+    userZip: String!,
+    userNoExt: String!,
+    userNoInt: String
+    userAddress: String!,
+    userAddress2: String,
+    notes: String,
+}
+
+type Categorie{
+    _id: String!
+    categoryName: String!
+    categoryRegistrationDate: String!
+}
+
+
+type Estado{
+    _id: String!
+    nameEdo: String!
+}
+
+type Municipio{
+    _id:String!
+    nameMuni: String!
+    edo: Estado!
+}
+
+input CategoryInput{
+     categoryName: String!
+}
+
+"Información del Producto"
+type Product{
+    """
+    _ID representa el ID dentro de la base de datos
+    """
+    _id: String!
+    productSKU: String!
+    productName: String!
+    productBrand: String!
+    productPrice: Float!
+    productWeight: Float
+    productBarCode: String!
+    productCartDesc: String!
+    productShortDesc: String
+    productLongDesc: String
+    productImage: String!
+    productCategoryID: Categorie
+    productStock:Float
+    productLive:Boolean
+    productUpdateDate: String
+    productRegistrationDate: String
+}
+
+type Order{
+    user:User
+    shortID: String
+    statusOrder: Float
+    canceled: String
+    orderCreated: String
+    total: Float
+    items: Float
+    products: [OrderItem]
+    deliverAdress: DeliverOrder
+}
+
+type OrderItem{
+    order: String
+    productSKU: String
+    productName: String
+    productPrice: Float
+    quantity: Float
+}
+
+type DeliverOrder{
+    userFirstName: String
+    userLastName: String
+    userPhone: String
+    userCity: String
+    citySelected:  Municipio
+    userState: String
+    stateSelected: Estado
+    userZip: String,
+    userNoExt: String
+    userNoInt: String
+    userAddress: String
+    userAddress2: String
+    notes: String
+}
+
+type OrderResult{
+    success: Boolean!,
+    message: String,
+    orderID: String
+}
+
+input ProductInput{
+    productSKU: String!
+    productName: String!
+    productBrand: String!
+    productBarCode: String!
+    productPrice: Float!
+    productWeight: Float
+    productCartDesc: String!
+    productShortDesc: String
+    productLongDesc: String
+    productImage: String!
+    productCategoryID: String
+    productStock:Float
+    productLive:Boolean
+}
+
+input CartInput{
+     user: String
+    product: String
+    quantity: Float
+}
+
+input OrderToDeliverInput{
+    userFirstName: String!
+    userLastName: String!
+    userPhone: String!
+    userCity: String!
+    citySelected:  String!
+    userState: String!
+    stateSelected:  String!
+    userZip: String!
+    userNoExt: String!
+    userNoInt: String
+    userAddress: String!
+    userAddress2: String
+    notes: String
+}
+
+
+
