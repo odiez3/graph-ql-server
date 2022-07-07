@@ -39,7 +39,7 @@
     "graphql-subscriptions": "^1.1.0",
     "graphql-tools": "^4.0.4",
     "http": "0.0.0",
-    "moment": "^2.25.3",
+    "moment": "^2.29.4",
     "mongoose": "^5.9.10",
     "ncp": "^2.0.0",
     "shortid": "^2.2.15",
